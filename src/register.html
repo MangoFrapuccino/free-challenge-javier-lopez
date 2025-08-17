@@ -5,50 +5,62 @@
   <title>Formulario con selector de fecha</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: url("fondo.jpg") no-repeat center center fixed;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      background: url("/images/registerjavierlopez.jpg") no-repeat center center;
       background-size: cover;
+      font-family: Arial, sans-serif;
       color: white;
-      padding: 20px;
+      position: relative;
     }
 
     .form-container {
-      background: rgba(0,0,0,0.7);
-      padding: 20px;
-      border-radius: 10px;
-      max-width: 600px;
-      margin: auto;
-    }
-
-    .form-container h2 {
-      text-align: center;
-    }
-
-    .form-container input {
+      position: relative;  /* para poder posicionar los inputs absolutamente */
       width: 100%;
-      padding: 10px;
-      margin: 8px 0;
-      border: none;
-      border-radius: 5px;
+      height: 100vh;
+    }
+
+    /* Inputs posicionables */
+    input.nombre {
+      position: absolute;
+      top: 200px;    /* ajusta con DevTools */
+      left: 150px;
+      width: 200px;
+    }
+
+    input.contraseña {
+      position: absolute;
+      top: 270px;    /* ajusta con DevTools */
+      left: 150px;
+      width: 200px;
+    }
+
+    #date-picker {
+      position: absolute;
+      top: 350px;    /* ajusta con DevTools */
+      left: 600px;
+      width: 400px;
     }
 
     .years, .months, .days {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
-      margin: 15px 0;
+      gap: 4px;
+      max-height: 150px;
+      overflow-y: auto; /* scroll si hay muchos elementos */
     }
 
     .option {
-      padding: 8px 12px;
-      background: rgba(255,255,255,0.2);
+      padding: 4px 8px;
       border-radius: 5px;
       cursor: pointer;
       text-align: center;
+      background: black;  /* muy tenue sobre la imagen */
     }
 
     .option:hover {
-      background: rgba(255,255,255,0.4);
+      background: white;
     }
 
     .hidden {
@@ -56,20 +68,23 @@
     }
 
     #selected-date {
-      margin-top: 20px;
+      position: absolute;
+      top: 350px;
+      left: 1200px;
       font-weight: bold;
+      font-size: 60px;
       color: #4caf50;
     }
   </style>
 </head>
 <body>
   <div class="form-container">
-    <h2>Registro</h2>
+    <h2 style="position:absolute; top:50px; left:150px;">Registro</h2>
     <form>
-      <input type="text" placeholder="Nombre" required>
-      <input type="password" placeholder="Contraseña" required>
+      <input type="text" placeholder="Nombre" required class="nombre">
+      <input type="password" placeholder="Contraseña" required class="contraseña">
 
-      <label>Fecha de Nacimiento:</label>
+      <label style="position:absolute; top:320px; left:150px;">Fecha de Nacimiento:</label>
       <div id="date-picker">
         <div id="year-selector" class="years"></div>
         <div id="month-selector" class="months hidden"></div>
@@ -100,7 +115,6 @@
         showYears();
       });
 
-    // Mostrar años
     function showYears() {
       yearSelector.innerHTML = "";
       Object.keys(data).forEach(year => {
@@ -115,7 +129,6 @@
       });
     }
 
-    // Mostrar meses
     function showMonths(year) {
       monthSelector.innerHTML = "";
       daySelector.classList.add("hidden");
@@ -135,7 +148,6 @@
       monthSelector.classList.remove("hidden");
     }
 
-    // Mostrar "días" (en realidad el nombre del mes repetido N veces)
     function showDays(year, month) {
       daySelector.innerHTML = "";
       const days = data[year][month];
@@ -143,7 +155,7 @@
       for (let d = 1; d <= days; d++) {
         const div = document.createElement("div");
         div.classList.add("option");
-        div.textContent = month; // mostramos el mes repetido
+        div.textContent = month;
         div.onclick = () => {
           const fecha = `${String(d).padStart(2,"0")}/${String(Object.keys(data[year]).indexOf(month)+1).padStart(2,"0")}/${year}`;
           fechaInput.value = fecha;
