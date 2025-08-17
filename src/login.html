@@ -2,23 +2,30 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Login dinámico</title>
+<title>LOGIN</title>
 <style>
   body {
     margin: 0;
     padding: 0;
     height: 100vh;
     background: url("./images/loginjavierlopez.jpg") no-repeat center center;
-    background-size: auto;
+    background-size: cover;
     font-family: Arial, sans-serif;
     color: white;
     position: relative;
+    overflow: hidden;
   }
 
-  .login-container {
-    position: relative;
-    width: 100%;
-    height: 100vh;
+  .login-scroll-container {
+    position: absolute;
+    top: 225px;
+    left: 215px;
+    width: 400px;
+    height: 600px;
+    overflow-y: auto;
+    background: rgba(0, 0, 0, 0);
+    border-radius: 10px;
+    padding: 20px;
   }
 
   h2 {
@@ -29,192 +36,344 @@
   }
 
   input.usuario, input.password {
-    position: absolute;
     width: 250px;
     padding: 10px;
-    border-radius: 20px;
     border: none;
     font-size: 18px;
-    background: rgba(0,0,0,0.8);
+    background: rgb(0, 0, 0);
     color: white;
+    margin-bottom: 15px;
   }
 
-  input.usuario { top: 200px; left: 150px; }
-  input.password { top: 270px; left: 150px; }
-
-  /* Botones */
-  button.entrar, button.volver {
+  .btn-entrar {
     position: absolute;
-    padding: 10px 20px;
     font-size: 18px;
-    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    padding: 35px 40px;
+    width: 320px;
+    color: white;
+    background-color: #4caf50;
+    top: 750px;
+    left: 800px;
+    z-index: 100;
+  }
+
+  .btn-volver {
+    position: absolute;
+    padding: 35px 40px;
+    font-size: 18px;
+    width: 370px;
     border: none;
     cursor: pointer;
     color: white;
+    background-color: #f44336;
+    top: 650px;
+    left: 770px;
+    z-index: 100;
   }
 
-  button.entrar { top: 350px; left: 150px; background-color: #4caf50; }
-  button.volver { top: 350px; left: 300px; background-color: #f44336; }
-
-  /* Olvidaste contraseña */
-  .olvidaste {
+  .btn-olvidaste {
     position: absolute;
-    top: 310px;
-    left: 150px;
-    color: #ffeb3b;
+    padding: 35px 40px;
+    font-size: 18px;
+    width: 200px;
+    border: none;
     cursor: pointer;
-    font-size: 16px;
-    text-decoration: underline;
+    color: white;
+    background-color: #e9b200;
+    top: 500px;
+    left: 1300px;
+    z-index: 100;
   }
 
-  /* Burbujas de mensaje */
   .bubble {
     position: absolute;
+    font-family: "Papyrus", serif;
     max-width: 300px;
-    background: rgba(0,0,0,0.8);
+    background: rgb(0, 0, 0);
     padding: 15px 20px;
-    border-radius: 20px;
+    font-size: 20px;
+    color: rgb(255, 0, 0);
+    line-height: 1.4;
+    top: 750px; 
+    left: 1130px;
+    display: none;
+    z-index: 100;
+  }
+
+  .bubble-volver {
+    position: absolute;
+    font-family: "Papyrus", serif;
+    max-width: 320px;
+    background: rgb(0, 0, 0);
+    padding: 15px 20px;
     font-size: 20px;
     color: yellow;
     line-height: 1.4;
+    top: 500px;
+    left: 770px;
+    display: none;
+    z-index: 100;
   }
 
-  .bubble::after {
-    content: "";
-    position: absolute;
-    bottom: -15px;
-    left: 20px;
-    border-width: 10px;
-    border-style: solid;
-    border-color: rgba(0,0,0,0.8) transparent transparent transparent;
+  .bubble.show, .bubble-volver.show {
+    display: block;
+    animation: fadein 0.5s;
   }
 
-  .bubble.fade { animation: fadein 0.5s; }
-  @keyframes fadein { from {opacity:0;} to {opacity:1;} }
+  @keyframes fadein { 
+    from { opacity: 0; } 
+    to { opacity: 1; } 
+  }
 
-
+  /* Imágenes orbitantes */
   .orbita {
-  width: 200px;
-  height: 200px;
-  position: absolute;
-  top: 270px;   /* ajusta con DevTools */
-  left: 450px;  /* ajusta con DevTools */
-}
+    width: 200px;
+    height: 200px;
+    position: absolute;
+    top: 300px;
+    left: 535px;
+    z-index: 50;
+  }
 
-/* Imagen girando en órbita */
-.orbitando {
-  width: 100px;
-  height: 100px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin: -25px 0 0 -100px; /* distancia del centro */
-  animation: orbitar 5s linear infinite;
-}
+  .orbitando {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -25px 0 0 -100px;
+    animation: orbitar 5s linear infinite;
+  }
 
-@keyframes orbitar {
-  from { transform: rotate(0deg) translateX(100px) rotate(0deg); }
-  to { transform: rotate(360deg) translateX(100px) rotate(-360deg); }
-}
-.hidden {
-  display: none;
-}
+  @keyframes orbitar {
+    from { transform: rotate(0deg) translateX(100px) rotate(0deg); }
+    to { transform: rotate(360deg) translateX(100px) rotate(-360deg); }
+  }
 
-.giro {
-  width: 100px;   /* ajusta tamaño */
-  height: 100px;
-  animation: rotar 3s linear infinite;
-  /* opcional: centrar la imagen */
-  display: block;
-  margin: 0 auto;
-}
+  .giro {
+    width: 100px;
+    height: 100px;
+    animation: rotar 3s linear infinite;
+    display: block;
+    margin: 0 auto;
+  }
 
-@keyframes rotar {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
+  @keyframes rotar {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
 
+  .scroll-space {
+    height: 5500px;
+  }
+
+  .toggle-username {
+    cursor: pointer;
+    color: yellow;
+    margin-left: 10px;
+  }
+
+  .password-container {
+    margin-top: 5450px;
+  }
+
+  .checkboxes {
+    position: absolute;
+    top: 840px;
+    left: 830px;
+    display: flex;
+    gap: 10px;
+    z-index: 100;
+  }
+
+  .checkbox {
+    width: 30px;
+    height: 30px;
+    border: 2px solid white;
+    background-color: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: yellow;
+  }
+
+  .checkbox.checked {
+    background-color: rgb(76, 175, 79);
+  }
+
+  .bubble-registro {
+    position: absolute;
+    font-family: "Papyrus", serif;
+    max-width: 400px;
+    background: rgb(0, 0, 0);
+    padding: 20px 30px;
+    font-size: 24px;
+    color: rgb(0, 255, 64);
+    line-height: 1.4;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+    z-index: 1000;
+    text-align: center;
+    border: 2px solid rgb(9, 255, 0);
+  }
+
+  .bubble-registro.show {
+    display: block;
+    animation: fadein 0.5s;
+  }
 
 </style>
 </head>
 <body>
 
-<div class="login-container">
-  <h2> </h2>
-  <form>
-    <input type="text" placeholder="Usuario" class="usuario" required>
-    <input type="password" placeholder="Contraseña" class="password" required>
+<div class="login-scroll-container">
+  <h2></h2>
+  <div>
+    <input type="password" id="username" class="usuario" placeholder="Usuario" required>
+    <span class="toggle-username" onclick="toggleVisibility()">👁️</span>
+  </div>
 
-    <div class="olvidaste">¿Olvidaste la contraseña?</div>
+  <div class="scroll-space"></div>
 
-    <button type="button" class="entrar">Entrar</button>
-    <button type="button" class="volver">Volver</button>
+  <div class="password-container">
+    <input type="password" class="password" id="password" placeholder="Contraseña" required>
+  </div>
+</div>
+<audio id="bgMusic" loop>
+  <source src="./audio/Space II - Dorian Concept (Slowed Version).mp3" type="audio/mpeg">
+  Tu navegador no soporta el elemento de audio.
+</audio>
 
-    <div id="bubble" class="bubble hidden"></div>
+<div class="btn-olvidaste">¿Olvidaste la contraseña?</div>
+<button type="button" class="btn-entrar" id="btn-entrar">Entrar</button>
+<button type="button" class="btn-volver">Volver</button>
 
-    <!-- Imagen orbitando -->
-    <div class="orbita">
-    <img src="images/viejo.png" class="orbitando" alt="burbuja animada">
-    <img src="images/mushroomman.png" class="giro" alt="girando">
-
-    </div>
-  </form>
+<div class="checkboxes" id="checkboxes">
+  <div class="checkbox"></div>
+  <div class="checkbox"></div>
+  <div class="checkbox"></div>
+  <div class="checkbox"></div>
+  <div class="checkbox"></div>
 </div>
 
-<script>
-const entrarBtn = document.querySelector("button.entrar");
-const volverBtn = document.querySelector("button.volver");
-const olvidaste = document.querySelector(".olvidaste");
-const bubble = document.getElementById("bubble");
+<div id="bubble" class="bubble"></div>
+<div id="bubble-volver" class="bubble-volver"></div>
 
+<div class="orbita">
+  <img src="images/viejo.png" class="orbitando" alt="burbuja animada">
+  <img src="images/mushroomman.png" class="giro" alt="girando">
+</div>
+<div id="bubble-registro" class="bubble-registro"></div>
+<script>
+
+//variables
 let clickCount = 0;
 let maxClicks = 5;
-
-// simulamos que ya se registró
 let registrado = localStorage.getItem("registrado") === "true";
+let checksCompleted = false;
 
-if(!registrado){
-  alert("Primero debes registrarte antes de usar este login.");
-}
-
-// Función para mostrar burbuja
-function showBubble(text, top=420, left=150){
+function showBubbleRegistro(text) {
+  const bubble = document.getElementById("bubble-registro");
   bubble.textContent = text;
-  bubble.style.top = top + "px";
-  bubble.style.left = left + "px";
-  bubble.classList.remove("hidden");
-  bubble.classList.add("fade");
-  setTimeout(()=>{ bubble.classList.remove("fade"); },500);
+  bubble.classList.add("show");
+  setTimeout(() => bubble.classList.remove("show"), 8000); //8 sec
 }
 
-// Evento botón Entrar
-entrarBtn.addEventListener("click", ()=>{
-  if(!registrado) return;
-
-  clickCount++;
-  let checks = "✓".repeat(clickCount);
-  showBubble(`¡Aprieta 5 veces! ${checks}`);
-
-  if(clickCount >= maxClicks){
-    showBubble("¡Listo! Has entrado correctamente", 420, 150);
-    clickCount = 0;
+document.addEventListener('DOMContentLoaded', function() {
+  if(!registrado){
+    showBubbleRegistro("PRIMERO DEBES REGISTRARTE ANTES DE USAR ESTE LOGIN");
   }
 });
 
-// Evento botón Volver
-volverBtn.addEventListener("click", ()=>{
-  showBubble("No puedes volver desde aquí, usa la flecha del navegador", 420, 300);
+
+function showBubble(text) {
+  const bubble = document.getElementById("bubble");
+  bubble.textContent = text;
+  bubble.classList.add("show");
+  setTimeout(() => bubble.classList.remove("show"), 2000);
+}
+
+
+function showBubbleVolver(text) {
+  const bubble = document.getElementById("bubble-volver");
+  bubble.textContent = text;
+  bubble.classList.add("show");
+  setTimeout(() => bubble.classList.remove("show"), 3000);
+}
+
+
+function toggleVisibility() {
+  const input = document.getElementById('username');
+  input.type = input.type === 'password' ? 'text' : 'password';
+}
+
+const checkboxes = document.querySelectorAll('.checkbox');
+const btnEntrar = document.getElementById('btn-entrar');
+
+checkboxes.forEach((checkbox, index) => {
+  checkbox.addEventListener('click', () => {
+    if (index === clickCount) {
+      checkbox.classList.add('checked');
+      checkbox.textContent = '✓';
+      clickCount++;
+      
+      if (clickCount === maxClicks) {
+        checksCompleted = true;
+        showBubble("CHECKS COMPLETADOS");
+      }
+    }
+  });
 });
 
-// Olvidaste la contraseña
-olvidaste.addEventListener("click", ()=>{
-  showBubble("¡No te preocupes! La contraseña no importa 😉", 370, 150);
+btnEntrar.addEventListener('click', () => {
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+  
+  if (!username || !password) {
+    showBubble("Debes rellenar usuario y contraseña");
+    return;
+  }
+  
+  if (!checksCompleted) {
+    showBubble("Debes completar los 5 checks primero");
+    return;
+  }
+  
+  //redirigir a javierlopez.html
+  window.location.href = "javierlopez.html";
 });
 
-// Prevención de navegación atrás
+document.querySelector(".btn-volver").addEventListener("click", () => {
+  showBubbleVolver("NO PUEDES VOLVER DESDE AQUÍ, USA LA FLECHA DEL NAVEGADOR");
+});
+
+document.querySelector(".btn-olvidaste").addEventListener("click", () => {
+  window.location.href = "calabozo.html";
+});
+
 window.onpopstate = function(event) {
   alert("No puedes volver con la flecha del navegador desde el login");
 }
+
+document.getElementById('username').type = 'password';
+
+document.addEventListener('DOMContentLoaded', function() {
+  const bgMusic = document.getElementById('bgMusic');
+  let played = false;
+  document.body.addEventListener('click', function() {
+    if(!played) {
+      bgMusic.play();
+      played = true;
+    }
+  });
+  bgMusic.volume = 0.3;
+});
 </script>
 
 </body>

@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Formulario con selector de fecha</title>
+  <title>REGISTER</title>
   <style>
     body {
       margin: 0;
@@ -202,6 +202,27 @@
       object-fit: contain; 
     }
 
+    #back-button {
+    position: absolute;
+    top: 200px;
+    left: 1000px;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    transition: all 0.3s;
+    z-index: 10000;
+  }
+
+  #back-button:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
+  }
+
   </style>
 </head>
 <body>
@@ -222,7 +243,7 @@
       <span id="verification-icon" class="verification-icon"></span>
       <div id="name-error">SOLO PUEDE SER USADO POR JAVIER</div>
       <input type="password" placeholder="Responde el acertijo" required class="contraseña">
-
+      
       <label style="position:absolute; top:320px; left:150px;"></label>
       <div id="date-picker">
         <div id="year-selector" class="years"></div>
@@ -230,7 +251,7 @@
         <div id="day-selector" class="days hidden"></div>
       </div>
       <button type="button" id="create-button">CREAR</button>
-
+      <button id="back-button">VOLVER</button>
       <input type="hidden" id="fechaNacimiento" name="fechaNacimiento">
       <div id="selected-date"></div>
       <div id="acertijo" class="acertijo hidden"></div>
@@ -276,6 +297,10 @@
   fetch("nombres.json")
     .then(response => response.json())
     .then(json => { nombresData = json; });
+
+    document.getElementById('back-button').addEventListener('click', function() {
+    window.location.href = 'index.html';
+  });
 
 document.addEventListener('DOMContentLoaded', function() {
     const effectAudio = document.getElementById('background-audio');
@@ -434,26 +459,29 @@ document.addEventListener('DOMContentLoaded', function() {
   nameList.classList.remove('hidden');
   }
 
-createButton.addEventListener('click', function() {
-  if (isFormComplete()) {
-    alert('Formulario completado correctamente (cambiar esto dsps pa que lleve a login)');
-  } else {
-    const errorMsg = document.createElement('div');
-    errorMsg.textContent = 'RELLENA TODOS LOS CAMPOS😡';
-    errorMsg.style.position = 'absolute';
-    errorMsg.style.top = '550px';
-    errorMsg.style.left = '70px';
-    errorMsg.style.color = 'red';
-    errorMsg.style.fontSize = '24px';
-    errorMsg.style.fontWeight = 'bold';
-    errorMsg.style.fontFamily = '"Comic Sans MS", cursive';
-    errorMsg.style.textShadow = '0 0 5px white';
-    document.querySelector('.form-container').appendChild(errorMsg);
-    setTimeout(() => {
-      errorMsg.remove();
-    }, 2000);
-  }
-});
+  createButton.addEventListener('click', function() {
+    if (isFormComplete()) {
+      // Guardar en localStorage que el usuario está registrado
+      localStorage.setItem("registrado", "true");
+      // Redirigir a login.html
+      window.location.href = 'login.html';
+    } else {
+      const errorMsg = document.createElement('div');
+      errorMsg.textContent = 'RELLENA TODOS LOS CAMPOS😡';
+      errorMsg.style.position = 'absolute';
+      errorMsg.style.top = '550px';
+      errorMsg.style.left = '70px';
+      errorMsg.style.color = 'red';
+      errorMsg.style.fontSize = '24px';
+      errorMsg.style.fontWeight = 'bold';
+      errorMsg.style.fontFamily = '"Comic Sans MS", cursive';
+      errorMsg.style.textShadow = '0 0 5px white';
+      document.querySelector('.form-container').appendChild(errorMsg);
+      setTimeout(() => {
+        errorMsg.remove();
+      }, 2000);
+    }
+  });
 </script>
 
 </body>
