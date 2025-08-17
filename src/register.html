@@ -8,7 +8,7 @@
       margin: 0;
       padding: 0;
       height: 100vh;
-      background: url("/images/registerjavierlopez.jpg") no-repeat center center;
+      background: url("./images/registerjavierlopez.jpg") no-repeat center center;
       background-size: cover;
       font-family: Arial, sans-serif;
       color: white;
@@ -22,10 +22,17 @@
     }
 
     /* Inputs posicionables */
+    input.nombre {
+      position: absolute;
+      top: 50px;    /* ajusta con DevTools */
+      left: 1440px;
+      width: 330px;
+      padding: 30px;
+    }
 
     input.contraseña {
       position: absolute;
-      top:  85px;    /* ajusta con DevTools */
+      top:  78px;    /* ajusta con DevTools */
       left: 70px;
       width: 400px;
       height: 50px;
@@ -105,12 +112,108 @@
     to {opacity:1;}
     }
 
+    /* Nuevos estilos para el selector de nombre */
+    #name-selector {
+      position: absolute;
+      top: 130px;
+      left: 1520px;
+      width: 200px;
+      background: rgba(0, 255, 55, 1);
+      padding: 10px;
+      border-radius: 0px;
+    }
+
+    .letters, .names {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      max-height: 150px;
+      overflow-y: auto;
+    }
+
+    .letter-option, .name-option {
+        font-family:  "Comic Sans MS", "Comic Sans", cursive;
+      padding: 4px 8px;
+      border-radius: 0px;
+      cursor: pointer;
+      text-align: center;
+      background: #999999;
+    }
+
+    .letter-option:hover, .name-option:hover {
+      background: #666;
+    }
+
+    .verification-icon {
+      position: absolute;
+      right: 290px;
+      top: 9%;
+      transform: translateY(-50%);
+      font-size: 24px;
+    }
+
+    #name-error {
+      position: absolute;
+      top: 100px; 
+      left: 1440px;
+      color: red;
+      font-family: "Comic Sans MS", cursive;
+      font-size: 18px;
+      display: none;
+    }
+
+    #create-button {
+      font-family:  "Papyrus", serif;
+      position: absolute;
+      top: 450px;
+      left: 70px;
+      width: 400px;
+      height: 80px;
+      background-color: red;
+      color: white;
+      font-size: 24px;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    #create-button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 10px 5px rgba(255, 0, 0, 0.5);
+    }
+
+    #floating-image {
+      position: absolute; 
+      z-index: 9999;
+      width: 200px;
+      height: 200px;
+      pointer-events: none;
+      top: 570px;  
+      left: 1950px;
+    }
+
+    #floating-image img {
+      width: auto;      
+      height: auto;     
+      max-width: 200%;  
+      max-height: 200%; 
+      object-fit: contain; 
+    }
+
   </style>
 </head>
 <body>
   <div class="form-container">
+  <div id="floating-image">
+    <img src="./images/hombreoculto.png" alt="Imagen flotante">
+    </div>
     <h2 style="position:absolute; top:50px; left:150px;"></h2>
     <form>
+      <input type="text" placeholder="responde nombre y apellido" required class="nombre" id="name-input" readonly>
+      <span id="verification-icon" class="verification-icon"></span>
+      <div id="name-error">SOLO PUEDE SER USADO POR JAVIER</div>
       <input type="password" placeholder="Responde el acertijo" required class="contraseña">
 
       <label style="position:absolute; top:320px; left:150px;"></label>
@@ -119,12 +222,17 @@
         <div id="month-selector" class="months hidden"></div>
         <div id="day-selector" class="days hidden"></div>
       </div>
+      <button type="button" id="create-button">CREAR</button>
 
       <input type="hidden" id="fechaNacimiento" name="fechaNacimiento">
       <div id="selected-date"></div>
 
       <div id="acertijo" class="acertijo hidden"></div>
     </form>
+      <div id="name-selector" class="hidden">
+      <div id="letter-selector" class="letters"></div>
+      <div id="name-list" class="names hidden"></div>
+    </div>
   </div>
 
   <script>
@@ -135,6 +243,10 @@
   const selectedDateDiv = document.getElementById("selected-date");
   const acertijoDiv = document.getElementById("acertijo");
   const inputPass = document.querySelector("input.contraseña");
+  const nameInput = document.getElementById("name-input");
+  const nameSelector = document.getElementById("name-selector");
+  const letterSelector = document.getElementById("letter-selector");
+  const nameList = document.getElementById("name-list");
 
   let data = {};
   let selectedYear = null;
@@ -153,6 +265,21 @@
   fetch("acertijos.json")
     .then(response => response.json())
     .then(json => { acertijos = json; });
+
+  //Cargar JSON nombres
+  fetch("nombres.json")
+    .then(response => response.json())
+    .then(json => { nombresData = json; });
+
+  const createButton = document.getElementById('create-button');
+
+  // Función para verificar si todos los campos están completos
+  function isFormComplete() {
+    const isNameFilled = nameInput.value.trim() !== '';
+    const isPasswordFilled = inputPass.value.trim() !== '';
+    const isDateFilled = fechaInput.value.trim() !== '';
+    return isNameFilled && isPasswordFilled && isDateFilled;
+  }
 
   // Funciones selector de fecha
   function showYears() {
@@ -226,6 +353,85 @@
 
   // Evento click en input de contraseña
   inputPass.addEventListener("click", mostrarAcertijo);
+
+  nameInput.addEventListener('focus', function() {
+      nameSelector.classList.remove('hidden');
+      showLetters();
+    });
+
+    function showLetters() {
+      letterSelector.innerHTML = '';
+      nameList.classList.add('hidden');
+
+      const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ12'.split('');
+
+      letters.forEach(letter => {
+        const div = document.createElement('div');
+        div.classList.add('letter-option');
+        div.textContent = letter;
+        div.onclick = () => {
+          if (isNaN(letter)) {
+            showNames(letter);
+          } else {
+            nameInput.value = letter;
+            nameSelector.classList.add('hidden');
+          }
+        };
+        letterSelector.appendChild(div);
+      });
+    }
+
+  function showNames(letter) {
+  nameList.innerHTML = '';
+  const names = nombresData[letter] || ['No hay nombres disponibles'];
+  names.forEach(name => {
+    const div = document.createElement('div');
+    div.classList.add('name-option');
+    div.textContent = name;
+    div.onclick = () => {
+      nameInput.value = name;
+      
+      // Verificación
+      const verificationIcon = document.getElementById('verification-icon');
+      const nameError = document.getElementById('name-error');
+      
+      if (name.toUpperCase() === 'JAVIER') {
+          verificationIcon.innerHTML = '❌';
+          verificationIcon.style.color = 'red';
+          nameError.style.display = 'block';
+      } else {
+          verificationIcon.innerHTML = '✅';
+          verificationIcon.style.color = '#4CAF50';
+          nameError.style.display = 'none';
+      }
+      nameSelector.classList.add('hidden');
+    };
+    nameList.appendChild(div);
+  });
+
+  nameList.classList.remove('hidden');
+  }
+
+createButton.addEventListener('click', function() {
+  if (isFormComplete()) {
+    alert('Formulario completado correctamente (cambiar esto dsps pa que lleve a login)');
+  } else {
+    const errorMsg = document.createElement('div');
+    errorMsg.textContent = 'RELLENA TODOS LOS CAMPOS😡';
+    errorMsg.style.position = 'absolute';
+    errorMsg.style.top = '550px';
+    errorMsg.style.left = '70px';
+    errorMsg.style.color = 'red';
+    errorMsg.style.fontSize = '24px';
+    errorMsg.style.fontWeight = 'bold';
+    errorMsg.style.fontFamily = '"Comic Sans MS", cursive';
+    errorMsg.style.textShadow = '0 0 5px white';
+    document.querySelector('.form-container').appendChild(errorMsg);
+    setTimeout(() => {
+      errorMsg.remove();
+    }, 2000);
+  }
+});
 </script>
 
 </body>
