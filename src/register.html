@@ -205,6 +205,10 @@
   </style>
 </head>
 <body>
+    <audio id="background-audio" autoplay>
+    <source src="./audio/Gong Sound Effect.mp3" type="audio/mpeg">
+    Tu navegador no soporta el elemento de audio.
+    </audio>
   <div class="form-container">
   <div id="floating-image">
     <img src="./images/hombreoculto.png" alt="Imagen flotante">
@@ -226,7 +230,6 @@
 
       <input type="hidden" id="fechaNacimiento" name="fechaNacimiento">
       <div id="selected-date"></div>
-
       <div id="acertijo" class="acertijo hidden"></div>
     </form>
       <div id="name-selector" class="hidden">
@@ -270,6 +273,21 @@
   fetch("nombres.json")
     .then(response => response.json())
     .then(json => { nombresData = json; });
+
+document.addEventListener('DOMContentLoaded', function() {
+    const audio = document.getElementById('background-audio');
+    audio.volume = 0.5; // Ajusta el volumen (opcional)
+    
+    // Intenta reproducir automáticamente (solo una vez)
+    audio.play().catch(e => {
+        console.log("Autoplay bloqueado. El audio se reproducirá al primer clic.");
+        // Reproduce al primer clic del usuario (sin mostrar botones)
+        document.body.addEventListener('click', function() {
+            audio.play();
+        }, { once: true }); // El { once: true } asegura que solo funcione una vez
+    });
+});
+
 
   const createButton = document.getElementById('create-button');
 
