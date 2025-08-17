@@ -1,0 +1,22 @@
+[
+  {"pregunta": "¿De qué color es el sol?", "respuesta": "amarillo"},
+  {"pregunta": "¿Cuántas patas tiene un perro?", "respuesta": "4"},
+  {"pregunta": "¿De qué color es el cielo en un día despejado?", "respuesta": "azul"},
+  {"pregunta": "¿Cuántos dedos tenemos en una mano?", "respuesta": "5"},
+  {"pregunta": "¿Qué animal dice 'miau'?", "respuesta": "gato"},
+  {"pregunta": "¿Qué animal dice 'guau'?", "respuesta": "perro"},
+  {"pregunta": "¿De qué color es la hierba?", "respuesta": "verde"},
+  {"pregunta": "¿Cuál es el primer mes del año?", "respuesta": "enero"},
+  {"pregunta": "¿Cuántos días tiene una semana?", "respuesta": "7"},
+  {"pregunta": "¿Qué fruta es amarilla y alargada?", "respuesta": "banana"},
+  {"pregunta": "¿Qué bebida viene de la vaca?", "respuesta": "leche"},
+  {"pregunta": "¿Qué animal tiene cuello largo y manchas?", "respuesta": "jirafa"},
+  {"pregunta": "¿Cuál es el color de la nieve?", "respuesta": "blanco"},
+  {"pregunta": "¿Qué usamos para escribir en papel?", "respuesta": "lapiz"},
+  {"pregunta": "¿Qué animal tiene orejas largas y salta?", "respuesta": "conejo"},
+  {"pregunta": "¿De qué color es una naranja?", "respuesta": "naranja"},
+  {"pregunta": "¿Cuántos ojos tiene la mayoría de los humanos?", "respuesta": "2"},
+  {"pregunta": "¿Qué planeta es conocido como el planeta rojo?", "respuesta": "marte"},
+  {"pregunta": "¿Qué líquido bebemos todos los días?", "respuesta": "agua"},
+  {"pregunta": "¿Qué color tiene un limón?", "respuesta": "amarillo"}
+]

@@ -17,29 +17,24 @@
 
     .form-container {
       position: relative;  /* para poder posicionar los inputs absolutamente */
-      width: 100%;
+      width: 110%;
       height: 100vh;
     }
 
     /* Inputs posicionables */
-    input.nombre {
-      position: absolute;
-      top: 200px;    /* ajusta con DevTools */
-      left: 150px;
-      width: 200px;
-    }
 
     input.contraseña {
       position: absolute;
-      top: 270px;    /* ajusta con DevTools */
-      left: 150px;
-      width: 200px;
+      top:  85px;    /* ajusta con DevTools */
+      left: 70px;
+      width: 400px;
+      height: 50px;
     }
 
     #date-picker {
       position: absolute;
       top: 350px;    /* ajusta con DevTools */
-      left: 600px;
+      left: 570px;
       width: 400px;
     }
 
@@ -61,6 +56,7 @@
 
     .option:hover {
       background: white;
+      transform: scale(2.0);
     }
 
     .hidden {
@@ -70,21 +66,54 @@
     #selected-date {
       position: absolute;
       top: 350px;
-      left: 1200px;
+      left: 980px;
       font-weight: bold;
-      font-size: 60px;
+      font-size: 55px;
       color: #4caf50;
     }
+
+    .acertijo {
+    position: absolute;
+    top: 500px;
+    left: 900px;
+    max-width: 300px; /* ancho máximo */
+    background: rgba(0,0,0,0.8);
+    padding: 15px 20px;
+    border-radius: 20px;  /* redondeado estilo burbuja */
+    font-size: 24px;
+    color: yellow;
+    line-height: 1.4;
+    }
+
+    /* triángulo que apunta hacia el input */
+    .acertijo::after {
+    content: "";
+    position: absolute;
+    bottom: -20px;  /* debajo de la burbuja */
+    left: 30px;     /* ajusta según dónde quieras apuntar */
+    border-width: 10px;
+    border-style: solid;
+    border-color: rgba(0,0,0,0.8) transparent transparent transparent;
+    }
+
+    .acertijo.fade {
+    animation: fadein 0.5s;
+    }
+
+    @keyframes fadein {
+    from {opacity:0;}
+    to {opacity:1;}
+    }
+
   </style>
 </head>
 <body>
   <div class="form-container">
-    <h2 style="position:absolute; top:50px; left:150px;">Registro</h2>
+    <h2 style="position:absolute; top:50px; left:150px;"></h2>
     <form>
-      <input type="text" placeholder="Nombre" required class="nombre">
       <input type="password" placeholder="Contraseña" required class="contraseña">
 
-      <label style="position:absolute; top:320px; left:150px;">Fecha de Nacimiento:</label>
+      <label style="position:absolute; top:320px; left:150px;"></label>
       <div id="date-picker">
         <div id="year-selector" class="years"></div>
         <div id="month-selector" class="months hidden"></div>
@@ -93,79 +122,111 @@
 
       <input type="hidden" id="fechaNacimiento" name="fechaNacimiento">
       <div id="selected-date"></div>
+
+      <div id="acertijo" class="acertijo hidden"></div>
     </form>
   </div>
 
   <script>
-    const yearSelector = document.getElementById("year-selector");
-    const monthSelector = document.getElementById("month-selector");
-    const daySelector = document.getElementById("day-selector");
-    const fechaInput = document.getElementById("fechaNacimiento");
-    const selectedDateDiv = document.getElementById("selected-date");
+  const yearSelector = document.getElementById("year-selector");
+  const monthSelector = document.getElementById("month-selector");
+  const daySelector = document.getElementById("day-selector");
+  const fechaInput = document.getElementById("fechaNacimiento");
+  const selectedDateDiv = document.getElementById("selected-date");
+  const acertijoDiv = document.getElementById("acertijo");
+  const inputPass = document.querySelector("input.contraseña");
 
-    let data = {};
-    let selectedYear = null;
-    let selectedMonth = null;
+  let data = {};
+  let selectedYear = null;
+  let selectedMonth = null;
+  let acertijos = []; // JSON de acertijos
 
-    // Cargar JSON con fetch
-    fetch("años.json")
-      .then(response => response.json())
-      .then(json => {
-        data = json;
-        showYears();
-      });
+  // Cargar JSON de años
+  fetch("años.json")
+    .then(response => response.json())
+    .then(json => {
+      data = json;
+      showYears();
+    });
 
-    function showYears() {
-      yearSelector.innerHTML = "";
-      Object.keys(data).forEach(year => {
-        const div = document.createElement("div");
-        div.classList.add("option");
-        div.textContent = year;
-        div.onclick = () => {
-          selectedYear = year;
-          showMonths(year);
-        };
-        yearSelector.appendChild(div);
-      });
+  // Cargar JSON de acertijos
+  fetch("acertijos.json")
+    .then(response => response.json())
+    .then(json => { acertijos = json; });
+
+  // Funciones selector de fecha
+  function showYears() {
+    yearSelector.innerHTML = "";
+    Object.keys(data).forEach(year => {
+      const div = document.createElement("div");
+      div.classList.add("option");
+      div.textContent = year;
+      div.onclick = () => {
+        selectedYear = year;
+        showMonths(year);
+      };
+      yearSelector.appendChild(div);
+    });
+  }
+
+  function showMonths(year) {
+    monthSelector.innerHTML = "";
+    daySelector.classList.add("hidden");
+    selectedMonth = null;
+
+    Object.keys(data[year]).forEach(month => {
+      const div = document.createElement("div");
+      div.classList.add("option");
+      div.textContent = month;
+      div.onclick = () => {
+        selectedMonth = month;
+        showDays(year, month);
+      };
+      monthSelector.appendChild(div);
+    });
+
+    monthSelector.classList.remove("hidden");
+  }
+
+  function showDays(year, month) {
+    daySelector.innerHTML = "";
+    const days = data[year][month];
+
+    for (let d = 1; d <= days; d++) {
+      const div = document.createElement("div");
+      div.classList.add("option");
+      div.textContent = month;
+      div.onclick = () => {
+        const fecha = `${String(d).padStart(2,"0")}/${String(Object.keys(data[year]).indexOf(month)+1).padStart(2,"0")}/${year}`;
+        fechaInput.value = fecha;
+        selectedDateDiv.textContent = "Seleccionaste: " + fecha;
+
+        monthSelector.classList.add("hidden");
+        daySelector.classList.add("hidden");      
+      };
+      daySelector.appendChild(div);
     }
+    daySelector.classList.remove("hidden");
+  }
 
-    function showMonths(year) {
-      monthSelector.innerHTML = "";
-      daySelector.classList.add("hidden");
-      selectedMonth = null;
+  // Función para mostrar acertijo aleatorio
+  function mostrarAcertijo() {
+    if(acertijos.length === 0) return;
+    const index = Math.floor(Math.random() * acertijos.length);
+    const acertijo = acertijos[index];
+    acertijoDiv.textContent = acertijo.pregunta; // asumimos {pregunta, respuesta}
+    acertijoDiv.classList.remove("hidden");
+    acertijoDiv.classList.add("fade");
 
-      Object.keys(data[year]).forEach(month => {
-        const div = document.createElement("div");
-        div.classList.add("option");
-        div.textContent = month;
-        div.onclick = () => {
-          selectedMonth = month;
-          showDays(year, month);
-        };
-        monthSelector.appendChild(div);
-      });
+    // quitar la clase fade después de la animación para poder reaplicarla
+    setTimeout(() => {
+      acertijoDiv.classList.remove("fade");
+    }, 500);
+  }
 
-      monthSelector.classList.remove("hidden");
-    }
+  // Evento click en input de contraseña
+  inputPass.addEventListener("click", mostrarAcertijo);
+</script>
 
-    function showDays(year, month) {
-      daySelector.innerHTML = "";
-      const days = data[year][month];
-
-      for (let d = 1; d <= days; d++) {
-        const div = document.createElement("div");
-        div.classList.add("option");
-        div.textContent = month;
-        div.onclick = () => {
-          const fecha = `${String(d).padStart(2,"0")}/${String(Object.keys(data[year]).indexOf(month)+1).padStart(2,"0")}/${year}`;
-          fechaInput.value = fecha;
-          selectedDateDiv.textContent = "Seleccionaste: " + fecha;
-        };
-        daySelector.appendChild(div);
-      }
-
-      daySelector.classList.remove("hidden");
-    }
-  </script>
 </body>
 </html>
