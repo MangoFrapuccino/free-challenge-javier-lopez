@@ -1,2 +1,221 @@
 <!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Login dinámico</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background: url("/images/login-background.jpg") no-repeat center center;
+    background-size: cover;
+    font-family: Arial, sans-serif;
+    color: white;
+    position: relative;
+  }
+
+  .login-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+  }
+
+  h2 {
+    position: absolute;
+    top: 100px;
+    left: 150px;
+    font-size: 36px;
+  }
+
+  input.usuario, input.password {
+    position: absolute;
+    width: 250px;
+    padding: 10px;
+    border-radius: 20px;
+    border: none;
+    font-size: 18px;
+    background: rgba(0,0,0,0.8);
+    color: white;
+  }
+
+  input.usuario { top: 200px; left: 150px; }
+  input.password { top: 270px; left: 150px; }
+
+  /* Botones */
+  button.entrar, button.volver {
+    position: absolute;
+    padding: 10px 20px;
+    font-size: 18px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    color: white;
+  }
+
+  button.entrar { top: 350px; left: 150px; background-color: #4caf50; }
+  button.volver { top: 350px; left: 300px; background-color: #f44336; }
+
+  /* Olvidaste contraseña */
+  .olvidaste {
+    position: absolute;
+    top: 310px;
+    left: 150px;
+    color: #ffeb3b;
+    cursor: pointer;
+    font-size: 16px;
+    text-decoration: underline;
+  }
+
+  /* Burbujas de mensaje */
+  .bubble {
+    position: absolute;
+    max-width: 300px;
+    background: rgba(0,0,0,0.8);
+    padding: 15px 20px;
+    border-radius: 20px;
+    font-size: 20px;
+    color: yellow;
+    line-height: 1.4;
+  }
+
+  .bubble::after {
+    content: "";
+    position: absolute;
+    bottom: -15px;
+    left: 20px;
+    border-width: 10px;
+    border-style: solid;
+    border-color: rgba(0,0,0,0.8) transparent transparent transparent;
+  }
+
+  .bubble.fade { animation: fadein 0.5s; }
+  @keyframes fadein { from {opacity:0;} to {opacity:1;} }
+
+
+  .orbita {
+  width: 200px;
+  height: 200px;
+  position: absolute;
+  top: 270px;   /* ajusta con DevTools */
+  left: 450px;  /* ajusta con DevTools */
+}
+
+/* Imagen girando en órbita */
+.orbitando {
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -25px 0 0 -100px; /* distancia del centro */
+  animation: orbitar 5s linear infinite;
+}
+
+@keyframes orbitar {
+  from { transform: rotate(0deg) translateX(100px) rotate(0deg); }
+  to { transform: rotate(360deg) translateX(100px) rotate(-360deg); }
+}
+.hidden {
+  display: none;
+}
+
+.giro {
+  width: 100px;   /* ajusta tamaño */
+  height: 100px;
+  animation: rotar 3s linear infinite;
+  /* opcional: centrar la imagen */
+  display: block;
+  margin: 0 auto;
+}
+
+@keyframes rotar {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+
+</style>
+</head>
+<body>
+
+<div class="login-container">
+  <h2>Iniciar Sesión</h2>
+  <form>
+    <input type="text" placeholder="Usuario" class="usuario" required>
+    <input type="password" placeholder="Contraseña" class="password" required>
+
+    <div class="olvidaste">¿Olvidaste la contraseña?</div>
+
+    <button type="button" class="entrar">Entrar</button>
+    <button type="button" class="volver">Volver</button>
+
+    <div id="bubble" class="bubble hidden"></div>
+
+    <!-- Imagen orbitando -->
+    <div class="orbita">
+    <img src="images/viejo.png" class="orbitando" alt="burbuja animada">
+    <img src="images/mushroomman.png" class="giro" alt="girando">
+
+    </div>
+  </form>
+</div>
+
+<script>
+const entrarBtn = document.querySelector("button.entrar");
+const volverBtn = document.querySelector("button.volver");
+const olvidaste = document.querySelector(".olvidaste");
+const bubble = document.getElementById("bubble");
+
+let clickCount = 0;
+let maxClicks = 5;
+
+// simulamos que ya se registró
+let registrado = localStorage.getItem("registrado") === "true";
+
+if(!registrado){
+  alert("Primero debes registrarte antes de usar este login.");
+}
+
+// Función para mostrar burbuja
+function showBubble(text, top=420, left=150){
+  bubble.textContent = text;
+  bubble.style.top = top + "px";
+  bubble.style.left = left + "px";
+  bubble.classList.remove("hidden");
+  bubble.classList.add("fade");
+  setTimeout(()=>{ bubble.classList.remove("fade"); },500);
+}
+
+// Evento botón Entrar
+entrarBtn.addEventListener("click", ()=>{
+  if(!registrado) return;
+
+  clickCount++;
+  let checks = "✓".repeat(clickCount);
+  showBubble(`¡Aprieta 5 veces! ${checks}`);
+
+  if(clickCount >= maxClicks){
+    showBubble("¡Listo! Has entrado correctamente", 420, 150);
+    clickCount = 0;
+  }
+});
+
+// Evento botón Volver
+volverBtn.addEventListener("click", ()=>{
+  showBubble("No puedes volver desde aquí, usa la flecha del navegador", 420, 300);
+});
+
+// Olvidaste la contraseña
+olvidaste.addEventListener("click", ()=>{
+  showBubble("¡No te preocupes! La contraseña no importa 😉", 370, 150);
+});
+
+// Prevención de navegación atrás
+window.onpopstate = function(event) {
+  alert("No puedes volver con la flecha del navegador desde el login");
+}
+</script>
+
+</body>
 </html>
