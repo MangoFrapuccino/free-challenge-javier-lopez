@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CALABOZO</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background: url('./images/hombremalvado.webp') no-repeat center center;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            color: rgb(255, 230, 0);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .texto-contenido {
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0);
+            padding: 20px;
+            border-radius: 5px;
+            max-width: 60%;
+            top: 100px;
+            left: 50px;
+        }
+
+        .btn-volver {
+            font-family: "Comic sans MS", sans-serif;
+            position: absolute;
+            padding: 15px 30px;
+            font-size: 18px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            bottom: 430px;
+            right: 300px;
+            z-index: 10;
+        }
+
+        .btn-volver:hover {
+            background-color: #d32f2f;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="texto-contenido">
+        <h1>¿CÓMO OSSAS OLVIDARTE DE TU CONTRASEÑA?</h1>
+        <p></p>
+    </div>
+    <button class="btn-volver" onclick="window.location.href='login.html'">VOLVER</button>
+</body>
+<script>
+</script>
+</html>
