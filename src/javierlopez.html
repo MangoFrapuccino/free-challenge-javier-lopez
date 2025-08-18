@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Akinator Javier López con Captcha</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f3f3f3;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .game-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    max-width: 900px;
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  }
+
+  .dialogue-box {
+    flex: 1;
+    background: #e8f0fe;
+    border-radius: 15px;
+    padding: 20px;
+    min-height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .question {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .options button {
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    background: #4285f4;
+    color: white;
+    font-size: 1em;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .options button:hover {
+    background: #3367d6;
+  }
+
+  .character {
+    width: 200px;
+    text-align: center;
+  }
+
+  .character img {
+    width: 100%;
+    border-radius: 15px;
+  }
+
+  /* Imagen dentro de la caja */
+  #final-image {
+    margin-top: 15px;
+    text-align: center;
+  }
+
+  #final-image img {
+    width: 150px;
+    border-radius: 10px;
+  }
+</style>
+</head>
+<body>
+<div class="game-container">
+  <!-- Caja de preguntas -->
+  <div class="dialogue-box" id="dialogue">
+    <div class="question" id="question">Cargando...</div>
+    <div class="options" id="options"></div>
+
+    <!-- Aquí aparecerá la foto final -->
+    <div id="final-image" style="display: none;">
+      <img src="images/lancer.png" alt="Javier López" />
+      <p><b>¡Es Javier López!</b></p>
+    </div>
+
+    <!-- Contenedor invisible para reCAPTCHA -->
+    <div id="captcha-container"></div>
+  </div>
+
+  <!-- Imagen fija a la derecha -->
+  <div class="character">
+    <img src="images/lancer.png" alt="Personaje genérico" />
+    <p><b>Javier López</b></p>
+  </div>
+</div>
+
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<script>
+let rounds = [];
+let currentRound = 0;
+let currentQuestion = 0;
+let widgetId = null;
+let currentCallback = null;
+
+// Cargar preguntas
+async function loadQuestions() {
+  const res = await fetch("preguntas.json");
+  rounds = await res.json();
+  showNext();
+}
+
+// Mostrar siguiente pregunta
+function showNext() {
+  const round = rounds.rounds[currentRound];
+  if (!round) return;
+
+  const qBox = document.getElementById("question");
+  const optionsDiv = document.getElementById("options");
+  optionsDiv.innerHTML = "";
+
+  if (round.type === "normal") {
+    const question = round.questions[currentQuestion];
+    qBox.textContent = question.text;
+
+    question.options.forEach(opt => {
+      const btn = document.createElement("button");
+      btn.textContent = opt;
+      btn.onclick = () => {
+        currentCallback = () => {
+          currentQuestion++;
+          if (currentQuestion >= round.questions.length) {
+            currentRound++;
+            currentQuestion = 0;
+          }
+          showNext();
+        };
+        grecaptcha.execute(widgetId);
+      };
+      optionsDiv.appendChild(btn);
+    });
+
+  } else if (round.type === "special") {
+    qBox.textContent = round.question.text;
+    round.question.options.forEach(opt => {
+      const btn = document.createElement("button");
+      btn.textContent = opt;
+      btn.onclick = () => {
+        currentCallback = () => {
+          if (opt === "Sí") {
+            showFinal();
+          } else {
+            currentRound++;
+            showNext();
+          }
+        };
+        grecaptcha.execute(widgetId);
+      };
+      optionsDiv.appendChild(btn);
+    });
+
+  } else if (round.type === "final") {
+    qBox.textContent = round.result.text;
+    round.result.options.forEach(opt => {
+      const btn = document.createElement("button");
+      btn.textContent = opt;
+      btn.onclick = () => {
+        currentRound = 0;
+        currentQuestion = 0;
+        document.getElementById("final-image").style.display = "none";
+        showNext();
+      };
+      optionsDiv.appendChild(btn);
+    });
+  }
+}
+
+// Mostrar resultado final
+function showFinal() {
+  const qBox = document.getElementById("question");
+  const optionsDiv = document.getElementById("options");
+  const finalImage = document.getElementById("final-image");
+
+  qBox.textContent = "¡Lo sabía! Tu personaje es Javier López 🎉";
+  optionsDiv.innerHTML = "";
+  finalImage.style.display = "block";
+
+  const btn = document.createElement("button");
+  btn.textContent = "Jugar de nuevo";
+  btn.onclick = () => {
+    currentRound = 0;
+    currentQuestion = 0;
+    finalImage.style.display = "none";
+    showNext();
+  };
+  optionsDiv.appendChild(btn);
+}
+
+// Callback de reCAPTCHA
+function onCaptchaSuccess(token) {
+  if (currentCallback) {
+    currentCallback();
+    currentCallback = null;
+    grecaptcha.reset(widgetId); // reinicia el captcha para permitir el siguiente
+  }
+}
+
+// Inicializar reCAPTCHA invisible
+function initCaptcha() {
+  widgetId = grecaptcha.render('captcha-container', {
+    'sitekey': '6LfPZakrAAAAAOMLDWNnI-HuShtomIGyQIMu4UNH', // <--- reemplaza con tu clave de sitio v2 invisible
+    'size': 'invisible',
+    'callback': onCaptchaSuccess
+  });
+}
+
+window.onload = function() {
+  initCaptcha();
+  loadQuestions();
+};
+</script>
+</body>
+</html>

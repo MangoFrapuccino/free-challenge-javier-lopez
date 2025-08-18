@@ -1,0 +1,100 @@
+{
+  "rounds": [
+    {
+      "type": "normal",
+      "questions": [
+        {
+          "text": "¿Tu personaje es real?",
+          "options": ["Sí", "No", "Tal vez", "Prefiero no responder"]
+        },
+        {
+          "text": "¿Es famoso en Chile?",
+          "options": ["Sí", "No", "Un poco", "No sé"]
+        },
+        {
+          "text": "¿Es hombre?",
+          "options": ["Sí", "No", "A veces", "No sé"]
+        },
+        {
+          "text": "¿Es mayor de 30 años?",
+          "options": ["Sí", "No", "Tal vez", "No sé"]
+        },
+        {
+          "text": "¿Trabaja en tecnología?",
+          "options": ["Sí", "No", "A veces", "No sé"]
+        }
+      ]
+    },
+    {
+      "type": "special",
+      "question": {
+        "text": "¿Tu personaje es Javier López?",
+        "options": ["Sí", "No"]
+      }
+    },
+    {
+      "type": "normal",
+      "questions": [
+        {
+          "text": "¿Vive en Santiago?",
+          "options": ["Sí", "No", "Tal vez", "No sé"]
+        },
+        {
+          "text": "¿Es un creador de contenido?",
+          "options": ["Sí", "No", "Tal vez", "No sé"]
+        },
+        {
+          "text": "¿Es deportista?",
+          "options": ["Sí", "No", "A veces", "No sé"]
+        },
+        {
+          "text": "¿Usa lentes?",
+          "options": ["Sí", "No", "A veces", "No sé"]
+        },
+        {
+          "text": "¿Es profesor?",
+          "options": ["Sí", "No", "Tal vez", "No sé"]
+        }
+      ]
+    },
+    {
+      "type": "special",
+      "question": {
+        "text": "¿Seguro que tu personaje no es Javier López?",
+        "options": ["Sí", "No"]
+      }
+    },
+    {
+      "type": "normal",
+      "questions": [
+        {
+          "text": "¿Trabaja con computadores?",
+          "options": ["Sí", "No", "Tal vez", "No sé"]
+        },
+        {
+          "text": "¿Le gusta la música?",
+          "options": ["Sí", "No", "A veces", "No sé"]
+        },
+        {
+          "text": "¿Es ingeniero?",
+          "options": ["Sí", "No", "Tal vez", "No sé"]
+        },
+        {
+          "text": "¿Es más alto que 1.75m?",
+          "options": ["Sí", "No", "No sé", "Tal vez"]
+        },
+        {
+          "text": "¿Le gustan los videojuegos?",
+          "options": ["Sí", "No", "A veces", "No sé"]
+        }
+      ]
+    },
+    {
+      "type": "final",
+      "result": {
+        "text": "Tu personaje es Javier López 🎉",
+        "options": ["Aceptar"]
+      }
+    }
+  ]
+}
