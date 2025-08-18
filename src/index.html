@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JAVIER LOPEZ</title>
+<title>Javier Lopez</title>
 <style>
   body {
     margin: 0;
@@ -12,11 +12,23 @@
   }
   canvas {
     display: block;
+    position: relative; 
+    z-index: 2;   
+  }
+  #logo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* centra exactamente */
+    width: 900px; /* ajusta tamaño */
+    pointer-events: none; /* para que los clicks pasen al canvas */
+    z-index: 1;
   }
 </style>
 </head>
 <body>
 <canvas id="gameCanvas"></canvas>
+<img src="images/logo.png" id="logo" />
 
 <script>
 const canvas = document.getElementById("gameCanvas");
@@ -27,11 +39,11 @@ canvas.height = window.innerHeight;
 // Jugadores con animación
 const players = [
   { 
-    x: 100, y: 100, vx: 8, vy: 5, size: 40, label: "Login", url: "login.html",
+    x: 100, y: 100, vx: 8, vy: 5, size: 100, label: "Login", url: "login.html",
     frames: ["#ff6666", "#ff9999", "#ffcccc"], frameIndex: 0, frameTimer: 0 
   },
   { 
-    x: 300, y: 200, vx: -6, vy: 7, size: 40, label: "Register", url: "register.html",
+    x: 300, y: 200, vx: -6, vy: 7, size: 100, label: "Register", url: "register.html",
     frames: ["#6666ff", "#9999ff", "#ccccff"], frameIndex: 0, frameTimer: 0
   }
 ];
@@ -44,7 +56,7 @@ function drawPlaceholder(p) {
   ctx.fillStyle = p.frames[p.frameIndex];
   ctx.fill();
   ctx.fillStyle = "#fff";
-  ctx.font = "bold 14px sans-serif";
+  ctx.font = `bold ${Math.floor(p.size / 2)}px sans-serif`;
   ctx.textAlign = "center";
   ctx.fillText(p.label, p.x, p.y + 5);
 }
