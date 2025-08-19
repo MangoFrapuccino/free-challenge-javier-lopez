@@ -8,15 +8,15 @@
       margin: 0;
       padding: 0;
       height: 100vh;
-      background: url("./images/registerjavierlopez.jpg") no-repeat center center;
-      background-size: cover;
+      background: #a349a3;
       font-family: Arial, sans-serif;
       color: white;
       position: relative;
+      overflow-x: hidden;
     }
 
     .form-container {
-      position: relative;  /* para poder posicionar los inputs absolutamente */
+      position: relative;
       width: 110%;
       height: 100vh;
     }
@@ -24,7 +24,7 @@
     /* Inputs posicionables */
     input.nombre {
       position: absolute;
-      top: 50px;    /* ajusta con DevTools */
+      top: 50px;
       left: 1440px;
       width: 330px;
       padding: 30px;
@@ -32,7 +32,7 @@
 
     input.contraseña {
       position: absolute;
-      top:  78px;    /* ajusta con DevTools */
+      top: 78px;
       left: 70px;
       width: 400px;
       height: 50px;
@@ -40,9 +40,10 @@
 
     #date-picker {
       position: absolute;
-      top: 350px;    /* ajusta con DevTools */
+      top: 350px;
       left: 570px;
       width: 400px;
+      z-index: 10;
     }
 
     .years, .months, .days {
@@ -50,7 +51,7 @@
       flex-wrap: wrap;
       gap: 4px;
       max-height: 150px;
-      overflow-y: auto; /* scroll si hay muchos elementos */
+      overflow-y: auto;
     }
 
     .option {
@@ -58,7 +59,7 @@
       border-radius: 5px;
       cursor: pointer;
       text-align: center;
-      background: black;  /* muy tenue sobre la imagen */
+      background: black;
     }
 
     .option:hover {
@@ -77,42 +78,43 @@
       font-weight: bold;
       font-size: 55px;
       color: #4caf50;
+      z-index: 10;
     }
 
     .acertijo {
-    position: absolute;
-    top: 500px;
-    left: 900px;
-    max-width: 300px; /* ancho máximo */
-    background: rgba(0,0,0,0.8);
-    padding: 15px 20px;
-    border-radius: 20px;  /* redondeado estilo burbuja */
-    font-size: 24px;
-    color: yellow;
-    line-height: 1.4;
+      position: absolute;
+      top: 500px;
+      left: 900px;
+      max-width: 300px;
+      background: rgba(0,0,0,0.8);
+      padding: 15px 20px;
+      border-radius: 20px;
+      font-size: 24px;
+      color: yellow;
+      line-height: 1.4;
+      z-index: 10;
     }
 
-    /* triángulo que apunta hacia el input */
     .acertijo::after {
-    content: "";
-    position: absolute;
-    bottom: -20px;  /* debajo de la burbuja */
-    left: 30px;     /* ajusta según dónde quieras apuntar */
-    border-width: 10px;
-    border-style: solid;
-    border-color: rgba(0,0,0,0.8) transparent transparent transparent;
+      content: "";
+      position: absolute;
+      bottom: -20px;
+      left: 30px;
+      border-width: 10px;
+      border-style: solid;
+      border-color: rgba(0,0,0,0.8) transparent transparent transparent;
+      z-index: 10;
     }
 
     .acertijo.fade {
-    animation: fadein 0.5s;
+      animation: fadein 0.5s;
     }
 
     @keyframes fadein {
-    from {opacity:0;}
-    to {opacity:1;}
+      from {opacity:0;}
+      to {opacity:1;}
     }
 
-    /* Nuevos estilos para el selector de nombre */
     #name-selector {
       position: absolute;
       top: 130px;
@@ -132,7 +134,7 @@
     }
 
     .letter-option, .name-option {
-        font-family:  "Comic Sans MS", "Comic Sans", cursive;
+      font-family: "Comic Sans MS", "Comic Sans", cursive;
       padding: 4px 8px;
       border-radius: 0px;
       cursor: pointer;
@@ -163,7 +165,7 @@
     }
 
     #create-button {
-      font-family:  "Papyrus", serif;
+      font-family: "Papyrus", serif;
       position: absolute;
       top: 450px;
       left: 70px;
@@ -187,80 +189,195 @@
     #floating-image {
       position: absolute; 
       z-index: 9999;
-      width: 200px;
-      height: 200px;
       pointer-events: none;
       top: 570px;  
       left: 1950px;
+      transform: scale(1.5); /* Escala para la imagen existente */
     }
 
     #floating-image img {
-      width: auto;      
-      height: auto;     
-      max-width: 200%;  
-      max-height: 200%; 
-      object-fit: contain; 
+      width: auto;
+      height: auto;
+      max-width: 200px;
+      max-height: 200px;
     }
 
     #back-button {
-    position: absolute;
-    top: 200px;
-    left: 1000px;
-    padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-family: Arial, sans-serif;
-    font-size: 16px;
-    transition: all 0.3s;
-    z-index: 10000;
-  }
+      position: absolute;
+      top: 200px;
+      left: 1000px;
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-family: Arial, sans-serif;
+      font-size: 16px;
+      transition: all 0.3s;
+      z-index: 10000;
+    }
 
-  #back-button:hover {
-    background-color: #45a049;
-    transform: scale(1.05);
-  }
+    #back-button:hover {
+      background-color: #45a049;
+      transform: scale(1.05);
+    }
 
+    /* Estilos para las 10 imágenes adicionales */
+    /* Puedes modificar los valores de top, left y transform para posicionar y escalar cada imagen */
+    .static-image {
+      position: absolute;
+      z-index: 10;
+    }
+    
+    .static-image img {
+      width: auto;
+      height: auto;
+      max-width: 1000px; /* Límite máximo de ancho */
+      max-height: 1000px; /* Límite máximo de alto */
+    }
+    
+    #image1 {
+      top: 390px;
+      left: 120px;
+      transform: scale(1);
+    }
+    
+    #image2 {
+      top: 32px;
+      left: 100px;
+      transform: scale(1.1);
+    }
+    
+    #image3 {
+      top: 10px;
+      left: 1450px;
+      transform: scale(1);
+    }
+    
+    #image4 {
+      top: 250px;
+      left: 660px;
+      transform: scale(1);
+    }
+    
+    #image5 {
+      top: 550px;
+      left: 700px;
+      transform: scale(1);
+      z-index: 1;
+    }
+    
+    #image6 {
+      top: 540px;
+      left: 1330px;
+      transform: scale(1);
+    }
+    
+    #image7 {
+      top: 550px;
+      left: 100px;
+      transform: scale(1);
+      z-index: 1;
+    }
+    
+    #image8 {
+      top: 30px;
+      left: 1220px;
+      transform: scale(1.0);
+    }
+    
+    #image9 {
+      top: 130px;
+      left: 750px;
+      transform: scale(1);
+    }
+    
+    #image10 {
+      top: 180px;
+      left: 200px;
+      transform: scale(1);
+    }
+
+    .bloque-blanco {
+      position: absolute;
+      background-color: white;
+      z-index: 1;
+      top: 340px;
+      left: 560px;
+      width: 1100px;
+      height: 160px;
+}
   </style>
 </head>
 <body>
     <audio id="background-audio" autoplay>
-    <source src="./audio/Gong Sound Effect.mp3" type="audio/mpeg">
-    Tu navegador no soporta el elemento de audio.
+      <source src="./audio/Gong Sound Effect.mp3" type="audio/mpeg">
+      Tu navegador no soporta el elemento de audio.
     </audio>
     <audio id="bg-music" loop>
-    <source src="./audio/Green Wizard Gnome Song 1 Minute and 24 seconds!.mp3" type="audio/mpeg">
+      <source src="./audio/Green Wizard Gnome Song 1 Minute and 24 seconds!.mp3" type="audio/mpeg">
     </audio>
-  <div class="form-container">
-  <div id="floating-image">
-    <img src="./images/hombreoculto.png" alt="Imagen flotante">
+    <div id="image1" class="static-image">
+      <img src="./images/register.PNG" alt="Imagen 1">
     </div>
-    <h2 style="position:absolute; top:50px; left:150px;"></h2>
-    <form>
-      <input type="text" placeholder="responde nombre y apellido" required class="nombre" id="name-input" readonly>
-      <span id="verification-icon" class="verification-icon"></span>
-      <div id="name-error">SOLO PUEDE SER USADO POR JAVIER</div>
-      <input type="password" placeholder="Responde el acertijo" required class="contraseña">
-      
-      <label style="position:absolute; top:320px; left:150px;"></label>
-      <div id="date-picker">
-        <div id="year-selector" class="years"></div>
-        <div id="month-selector" class="months hidden"></div>
-        <div id="day-selector" class="days hidden"></div>
+    <div id="image2" class="static-image">
+      <img src="./images/contraseña.PNG" alt="Imagen 2">
+    </div>
+    <div id="image3" class="static-image">
+      <img src="./images/nombreyapelido.PNG" alt="Imagen 3">
+    </div>
+    <div id="image4" class="static-image">
+      <img src="./images/fechadenacimiento.PNG" alt="Imagen 4">
+    </div>
+    <div id="image5" class="static-image">
+      <img src="./images/creaturaazul.PNG" alt="Imagen 5">
+    </div>
+    <div id="image6" class="static-image">
+      <img src="./images/duendemagico.PNG" alt="Imagen 6">
+    </div>
+    <div id="image7" class="static-image">
+      <img src="./images/magomagico.PNG" alt="Imagen 7">
+    </div>
+    <div id="image8" class="static-image">
+      <img src="./images/flecha1.PNG" alt="Imagen 8">
+    </div>
+    <div id="image9" class="static-image">
+      <img src="./images/flecha2.PNG" alt="Imagen 9">
+    </div>
+    <div id="image10" class="static-image">
+      <img src="./images/flecha3.PNG" alt="Imagen 10">
+    </div>
+    <div class="bloque-blanco"></div>
+    
+    <div class="form-container">
+      <div id="floating-image">
+        <img src="./images/hombreoculto.png" alt="Imagen flotante">
       </div>
-      <button type="button" id="create-button">CREAR</button>
-      <button id="back-button">VOLVER</button>
-      <input type="hidden" id="fechaNacimiento" name="fechaNacimiento">
-      <div id="selected-date"></div>
-      <div id="acertijo" class="acertijo hidden"></div>
-    </form>
+      <h2 style="position:absolute; top:50px; left:150px;"></h2>
+      <form>
+        <input type="text" placeholder="responde nombre y apellido" required class="nombre" id="name-input" readonly>
+        <span id="verification-icon" class="verification-icon"></span>
+        <div id="name-error">SOLO PUEDE SER USADO POR JAVIER</div>
+        <input type="password" placeholder="Responde el acertijo" required class="contraseña">
+        
+        <label style="position:absolute; top:320px; left:150px;"></label>
+        <div id="date-picker">
+          <div id="year-selector" class="years"></div>
+          <div id="month-selector" class="months hidden"></div>
+          <div id="day-selector" class="days hidden"></div>
+        </div>
+        <button type="button" id="create-button">CREAR</button>
+        <button id="back-button">VOLVER</button>
+        <input type="hidden" id="fechaNacimiento" name="fechaNacimiento">
+        <div id="selected-date"></div>
+        <div id="acertijo" class="acertijo hidden"></div>
+      </form>
       <div id="name-selector" class="hidden">
-      <div id="letter-selector" class="letters"></div>
-      <div id="name-list" class="names hidden"></div>
+        <div id="letter-selector" class="letters"></div>
+        <div id="name-list" class="names hidden"></div>
+      </div>
     </div>
-  </div>
 
   <script>
   const yearSelector = document.getElementById("year-selector");
@@ -278,7 +395,8 @@
   let data = {};
   let selectedYear = null;
   let selectedMonth = null;
-  let acertijos = []; // JSON de acertijos
+  let acertijos = [];
+  let nombresData = {};
 
   // Cargar JSON de años
   fetch("años.json")
@@ -293,16 +411,16 @@
     .then(response => response.json())
     .then(json => { acertijos = json; });
 
-  //Cargar JSON nombres
+  // Cargar JSON nombres
   fetch("nombres.json")
     .then(response => response.json())
     .then(json => { nombresData = json; });
 
-    document.getElementById('back-button').addEventListener('click', function() {
+  document.getElementById('back-button').addEventListener('click', function() {
     window.location.href = 'index.html';
   });
 
-document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', function() {
     const effectAudio = document.getElementById('background-audio');
     const bgMusic = document.getElementById('bg-music');
     effectAudio.volume = 0.5;
@@ -311,16 +429,14 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log("Autoplay bloqueado. Se reproducirá al primer clic.");
         document.body.addEventListener('click', () => effectAudio.play(), { once: true });
     });
-    //Cuando termine el gong inicia la música de fondo
+    
     effectAudio.addEventListener('ended', () => {
         bgMusic.play().catch(e => console.log("Error al iniciar música:", e));
     });
-});
-
+  });
 
   const createButton = document.getElementById('create-button');
 
-  // Función para verificar si todos los campos están completos
   function isFormComplete() {
     const isNameFilled = nameInput.value.trim() !== '';
     const isPasswordFilled = inputPass.value.trim() !== '';
@@ -328,7 +444,6 @@ document.addEventListener('DOMContentLoaded', function() {
     return isNameFilled && isPasswordFilled && isDateFilled;
   }
 
-  // Funciones selector de fecha
   function showYears() {
     yearSelector.innerHTML = "";
     Object.keys(data).forEach(year => {
@@ -383,22 +498,19 @@ document.addEventListener('DOMContentLoaded', function() {
     daySelector.classList.remove("hidden");
   }
 
-  // Función para mostrar acertijo aleatorio
   function mostrarAcertijo() {
     if(acertijos.length === 0) return;
     const index = Math.floor(Math.random() * acertijos.length);
     const acertijo = acertijos[index];
-    acertijoDiv.textContent = acertijo.pregunta; // asumimos {pregunta, respuesta}
+    acertijoDiv.textContent = acertijo.pregunta;
     acertijoDiv.classList.remove("hidden");
     acertijoDiv.classList.add("fade");
 
-    // quitar la clase fade después de la animación para poder reaplicarla
     setTimeout(() => {
       acertijoDiv.classList.remove("fade");
     }, 500);
   }
 
-  // Evento click en input de contraseña
   inputPass.addEventListener("click", mostrarAcertijo);
 
   nameInput.addEventListener('focus', function() {
@@ -406,7 +518,7 @@ document.addEventListener('DOMContentLoaded', function() {
       showLetters();
     });
 
-    function showLetters() {
+  function showLetters() {
       letterSelector.innerHTML = '';
       nameList.classList.add('hidden');
 
@@ -429,41 +541,38 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
   function showNames(letter) {
-  nameList.innerHTML = '';
-  const names = nombresData[letter] || ['No hay nombres disponibles'];
-  names.forEach(name => {
-    const div = document.createElement('div');
-    div.classList.add('name-option');
-    div.textContent = name;
-    div.onclick = () => {
-      nameInput.value = name;
-      
-      // Verificación
-      const verificationIcon = document.getElementById('verification-icon');
-      const nameError = document.getElementById('name-error');
-      
-      if (name.toUpperCase() === 'JAVIER') {
-          verificationIcon.innerHTML = '❌';
-          verificationIcon.style.color = 'red';
-          nameError.style.display = 'block';
-      } else {
-          verificationIcon.innerHTML = '✅';
-          verificationIcon.style.color = '#4CAF50';
-          nameError.style.display = 'none';
-      }
-      nameSelector.classList.add('hidden');
-    };
-    nameList.appendChild(div);
-  });
+    nameList.innerHTML = '';
+    const names = nombresData[letter] || ['No hay nombres disponibles'];
+    names.forEach(name => {
+      const div = document.createElement('div');
+      div.classList.add('name-option');
+      div.textContent = name;
+      div.onclick = () => {
+        nameInput.value = name;
+        
+        const verificationIcon = document.getElementById('verification-icon');
+        const nameError = document.getElementById('name-error');
+        
+        if (name.toUpperCase() === 'JAVIER') {
+            verificationIcon.innerHTML = '❌';
+            verificationIcon.style.color = 'red';
+            nameError.style.display = 'block';
+        } else {
+            verificationIcon.innerHTML = '✅';
+            verificationIcon.style.color = '#4CAF50';
+            nameError.style.display = 'none';
+        }
+        nameSelector.classList.add('hidden');
+      };
+      nameList.appendChild(div);
+    });
 
-  nameList.classList.remove('hidden');
+    nameList.classList.remove('hidden');
   }
 
   createButton.addEventListener('click', function() {
     if (isFormComplete()) {
-      // Guardar en localStorage que el usuario está registrado
       localStorage.setItem("registrado", "true");
-      // Redirigir a login.html
       window.location.href = 'login.html';
     } else {
       const errorMsg = document.createElement('div');
@@ -474,6 +583,7 @@ document.addEventListener('DOMContentLoaded', function() {
       errorMsg.style.color = 'red';
       errorMsg.style.fontSize = '24px';
       errorMsg.style.fontWeight = 'bold';
+      errorMsg.style.zIndex = '10';
       errorMsg.style.fontFamily = '"Comic Sans MS", cursive';
       errorMsg.style.textShadow = '0 0 5px white';
       document.querySelector('.form-container').appendChild(errorMsg);
@@ -482,7 +592,6 @@ document.addEventListener('DOMContentLoaded', function() {
       }, 2000);
     }
   });
-</script>
-
+  </script>
 </body>
 </html>
