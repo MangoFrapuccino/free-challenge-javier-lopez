@@ -123,6 +123,7 @@
       background: rgba(0, 255, 55, 1);
       padding: 10px;
       border-radius: 0px;
+      z-index: 10;
     }
 
     .letters, .names {
@@ -192,7 +193,7 @@
       pointer-events: none;
       top: 570px;  
       left: 1950px;
-      transform: scale(1.5); /* Escala para la imagen existente */
+      transform: scale(1.5);
     }
 
     #floating-image img {
@@ -223,8 +224,6 @@
       transform: scale(1.05);
     }
 
-    /* Estilos para las 10 imágenes adicionales */
-    /* Puedes modificar los valores de top, left y transform para posicionar y escalar cada imagen */
     .static-image {
       position: absolute;
       z-index: 10;
@@ -233,8 +232,8 @@
     .static-image img {
       width: auto;
       height: auto;
-      max-width: 1000px; /* Límite máximo de ancho */
-      max-height: 1000px; /* Límite máximo de alto */
+      max-width: 1000px;
+      max-height: 1000px;
     }
     
     #image1 {

@@ -8,8 +8,8 @@
     margin: 0;
     padding: 0;
     height: 100vh;
-    background: url("./images/loginjavierlopez.jpg") no-repeat center center;
-    background-size: cover;
+    background: url("./images/loginjavierlopez1.jpg") no-repeat center center;
+    background-size: 100% 100%;
     font-family: Arial, sans-serif;
     color: white;
     position: relative;
@@ -26,6 +26,7 @@
     background: rgba(0, 0, 0, 0);
     border-radius: 10px;
     padding: 20px;
+    z-index: 10;
   }
 
   h2 {
@@ -167,16 +168,19 @@
 
   .scroll-space {
     height: 5500px;
+    z-index: 10;
   }
 
   .toggle-username {
     cursor: pointer;
     color: yellow;
     margin-left: 10px;
+    z-index: 10;
   }
 
   .password-container {
     margin-top: 5450px;
+    z-index: 10;
   }
 
   .checkboxes {
@@ -221,11 +225,38 @@
     z-index: 1000;
     text-align: center;
     border: 2px solid rgb(9, 255, 0);
+    z-index: 10;
   }
 
   .bubble-registro.show {
     display: block;
     animation: fadein 0.5s;
+    z-index: 10;
+  }
+  
+  .static-image {
+    position: absolute;
+    z-index: 10;
+  }
+    
+  .static-image img {
+    width: auto;
+    height: auto;
+    max-width: 1000px;
+    max-height: 1000px;
+  }
+
+  #image1 {
+    top: 85px;
+    left: 230px;
+    transform: scale(1);
+  }
+
+  #image2 {
+    top: 220px;
+    left: 215px;
+    transform: scale(1);
+    z-index: 1;
   }
 
 </style>
@@ -238,6 +269,7 @@
     <input type="password" id="username" class="usuario" placeholder="Usuario" required>
     <span class="toggle-username" onclick="toggleVisibility()">👁️</span>
   </div>
+  
 
   <div class="scroll-space"></div>
 
@@ -270,6 +302,12 @@
   <img src="images/mushroomman.png" class="giro" alt="girando">
 </div>
 <div id="bubble-registro" class="bubble-registro"></div>
+      <div id="image1" class="static-image">
+      <img src="./images/login.PNG" alt="Imagen 1">
+    </div>
+      <div id="image2" class="static-image">
+      <img src="./images/scrollspace.PNG" alt="Imagen 1">
+    </div>
 <script>
 
 //variables
